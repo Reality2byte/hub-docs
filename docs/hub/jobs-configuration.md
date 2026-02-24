@@ -56,7 +56,7 @@ Find the list of all arguments in the [CLI documentation](https://huggingface.co
 
 ### Built-in environment variables
 
-Jobs automatically provide the following environment variables inside the container:
+Similarly to the [built-in environment variables in Spaces](./spaces-overview#built-in-environment-variables), Jobs automatically provide the following environment variables inside the container:
 
 | Variable | Description |
 |----------|-------------|
@@ -70,6 +70,7 @@ You can use these variables to track outputs, adapt your code to available resou
 ```bash
 # Access job environment information
 >>> hf jobs run python:3.12 python -c "import os; print(f'Job: {os.environ.get(\"JOB_ID\")}, CPU: {os.environ.get(\"CPU_CORES\")}, Mem: {os.environ.get(\"MEMORY\")}')"
+```
 
 ### User-defined environment variables
 
