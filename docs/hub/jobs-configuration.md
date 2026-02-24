@@ -54,6 +54,25 @@ Find the list of all arguments in the [CLI documentation](https://huggingface.co
 
 ## Environment variables and Secrets
 
+### Built-in environment variables
+
+Jobs automatically provide the following environment variables inside the container:
+
+| Variable | Description |
+|----------|-------------|
+| `JOB_ID` | The unique identifier of the current job (e.g., `699d874f1aad19adb8aaeadc`). This is the same ID shown in the UI and the job URL. |
+| `ACCELERATOR` | The type of accelerator available (e.g., `t4-medium`, `a10g-small`, `a100x4`), or `none` for CPU-only jobs. |
+| `CPU_CORES` | The number of CPU cores allocated to the job. |
+| `MEMORY` | The amount of memory allocated to the job (e.g., `8Gi`). |
+
+You can use these variables to track outputs, adapt your code to available resources, or reference the current job programmatically:
+
+```bash
+# Access job environment information
+>>> hf jobs run python:3.12 python -c "import os; print(f'Job: {os.environ.get(\"JOB_ID\")}, CPU: {os.environ.get(\"CPU_CORES\")}, Mem: {os.environ.get(\"MEMORY\")}')"
+
+### User-defined environment variables
+
 You can pass environment variables to your job using 
 
 ```bash
