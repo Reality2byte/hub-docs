@@ -26,8 +26,14 @@ Bucket data is stored in **US and EU regions**. You can choose where your data l
 
 Hugging Face maintains the following certifications and compliance standards:
 
-<img alt="SOC 2" src="https://cdn-media.huggingface.co/marketing/pmh-page/soc2.png" width="150" />
-<img alt="GDPR" src="https://cdn-media.huggingface.co/marketing/pmh-page/gdpr.png" width="150" />
+
+<div class="flex justify-start flex-wrap gap-5">
+<img alt="SOC 2" src="https://cdn-media.huggingface.co/marketing/pmh-page/soc2.png" width="150" class="mb-0" />
+<img alt="GDPR" src="https://cdn-media.huggingface.co/marketing/pmh-page/gdpr.png" width="150" class="mb-0" />
+<img class="block dark:hidden mt-0" src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/storage-security-compliande-doc.png"/>
+<img class="hidden dark:block mt-0" src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/storage-security-compliande-doc-dark.png"/>
+</div>
+
 
 - **SOC 2 Type 2** certified — active monitoring and patching of security vulnerabilities
 - **GDPR** compliant — data processing agreements available through [Enterprise Plans](https://huggingface.co/pricing)
