@@ -14,6 +14,12 @@ for ds in api.list_datasets(benchmark=True):
     print(ds.id)
 ```
 
+Or via the REST API directly (useful for agents and scripting):
+
+```
+GET https://huggingface.co/api/datasets?filter=benchmark:official
+```
+
 ## Getting leaderboard rankings
 
 The leaderboard API returns ranked model scores for a benchmark dataset:
@@ -102,6 +108,22 @@ info = api.model_info("Qwen/Qwen3.5-397B-A17B")
 print(f"Released: {info.created_at}")
 print(f"Parameters: {info.safetensors.total / 1e9:.1f}B" if info.safetensors else "")
 ```
+
+## Model-centric view: eval results per model
+
+The leaderboard API gives a dataset-centric view (all models on one benchmark). For the reverse — all benchmark scores for a single model — use `model_info` with `expand=["evalResults"]`:
+
+```python
+from huggingface_hub import HfApi
+
+api = HfApi()
+info = api.model_info("Qwen/Qwen3.5-397B-A17B", expand=["evalResults"])
+
+for result in info.eval_results:
+    print(f"{result.dataset_id}: {result.value}")
+```
+
+This returns [`EvalResultEntry`](https://huggingface.co/docs/huggingface_hub/package_reference/hf_api#huggingface_hub.EvalResultEntry) objects parsed from the model's `.eval_results/` files.
 
 ## Example: building on leaderboard data
 
