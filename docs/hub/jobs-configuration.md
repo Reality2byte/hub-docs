@@ -101,6 +101,62 @@ You can pass environment variables to your job using
 > With this syntax, the secret is retrieved from the environment variable.
 > For `HF_TOKEN`, it may read the token file located in the Hugging Face home folder if the environment variable is unset.
 
+## Volumes
+
+Mount Hugging Face repositories (models, datasets) or [Storage Buckets](./storage-buckets) as volumes in your job container using `-v` or `--volume`. The syntax uses the `hf://` URL scheme: `hf://[TYPE/]SOURCE:/MOUNT_PATH[:ro]`.
+
+Volume types:
+
+| Type | Example |
+|------|---------|
+| Model repo | `-v hf://openai/gpt-oss-120b:/model` |
+| Dataset repo | `-v hf://datasets/stanfordnlp/imdb:/data` |
+| Storage bucket | `-v hf://buckets/username/my-bucket:/mnt` |
+| Subfolder | `-v hf://datasets/org/my-dataset/train:/data` |
+
+Then use the mounted volume as a local directory inside the container:
+
+```bash
+# Mount a dataset and query it with DuckDB
+>>> hf jobs run -v hf://datasets/stanfordnlp/imdb:/dataset \
+...     duckdb/duckdb duckdb -c "SELECT * FROM '/dataset/**/*.parquet' LIMIT 5"
+
+# Mount a bucket to save training checkpoints
+>>> hf jobs uv run -v hf://buckets/username/my-bucket:/training-outputs \
+...     sft.py --output-dir /training-outputs/training-v3-final
+```
+
+Multiple volumes can be mounted by repeating the `-v` flag:
+
+```bash
+>>> hf jobs run -v hf://datasets/username/my-dataset:/data -v hf://buckets/username/my-bucket:/output \
+...     python:3.12 python script.py
+```
+
+Models and datasets are always mounted **read-only**. Storage buckets are **read-write** by default, which is useful for saving outputs, checkpoints, or intermediate results. Use `:ro` to mount a bucket in read-only mode:
+
+```bash
+>>> hf jobs run -v hf://buckets/username/my-bucket:/mnt:ro python:3.12 ls /mnt
+```
+
+In Python, use the [`Volume`](https://huggingface.co/docs/huggingface_hub/package_reference/jobs#huggingface_hub.Volume) class:
+
+```python
+from huggingface_hub import Volume, run_job
+
+job = run_job(
+    image="python:3.12",
+    command=["python", "-c", "import os; print(os.listdir('/data'))"],
+    volumes=[
+        Volume(type="dataset", source="username/my-dataset", mount_path="/data"),
+        Volume(type="bucket", source="username/my-bucket", mount_path="/output"),
+    ],
+)
+```
+
+> [!NOTE]
+> Volume mounting requires `huggingface_hub` >= 1.8.0. See the [Python client documentation](https://huggingface.co/docs/huggingface_hub/guides/jobs#mount-a-volume) and [installation guide](https://huggingface.co/docs/huggingface_hub/installation) for more details.
+
 ## Hardware flavor
 
 Run jobs on GPUs or TPUs with the `flavor` argument. For example, to run a PyTorch job on an A10G GPU:
