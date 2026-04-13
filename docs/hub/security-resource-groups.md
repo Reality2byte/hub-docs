@@ -33,9 +33,9 @@ Head to your Organization's settings, then navigate to the "Resource Group" tab 
     <img class="hidden dark:block" src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/hub/org-resource-groups-page-dark.png"/>
 </div>
 
-If you are an admin of the organization, you can create and manage Resource Groups from that page.
+Organization admins can create and manage Resource Groups from that page. Depending on the organization's settings, members with lower roles may also be allowed to create Resource Groups (see [Who can create Resource Groups](#who-can-create-resource-groups) below).
 
-After creating a resource group and giving it a meaningful name, you can start adding repositories and users to it.
+After creating a Resource Group and giving it a meaningful name, you can start adding repositories and users to it.
 
 <div class="flex justify-center">
     <img class="block dark:hidden" src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/hub/org-resource-groups-manage-empty-page.png"/>
@@ -74,6 +74,18 @@ Auto-join and SCIM management are **mutually exclusive** on the same Resource Gr
 - You cannot link a SCIM group to a Resource Group that has auto-join enabled.
 
 To switch a Resource Group from auto-join to SCIM-managed (or vice versa), disable the current setting first.
+
+## Who can create Resource Groups
+
+By default, only organization admins can create new Resource Groups. Org admins can change this by setting the **minimum member role required to create Resource Groups** on the Resource Groups settings page.
+
+The available options are:
+- **Admins only** (default) — only org admins can create Resource Groups.
+- **Write** — members with Write or Admin role can create Resource Groups.
+- **Contributor** — members with Contributor, Write, or Admin role can create Resource Groups.
+- **All members** — any org member can create Resource Groups.
+
+When a non-admin member creates a Resource Group through the UI, they are automatically added as an **admin** of that newly created group. Through the API, this does not happen automatically, since API callers may be creating groups on behalf of others. Non-admin API callers must include at least one user with the admin role in the group's initial member list.
 
 ## Resource Groups API
 
