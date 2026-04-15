@@ -8,7 +8,7 @@ You can interact with buckets using the Hub web interface, the [`hf` CLI](https:
 > Buckets are available to all users and organizations. See [hf.co/storage](https://huggingface.co/storage) for pricing details.
 
 > [!TIP]
-> Want to use bucket data with pandas, DuckDB, or mount buckets as a local filesystem? See [Access Patterns](./storage-buckets-access).
+> See [Access Patterns](./storage-buckets-access) for how to reach bucket data from your tools (mount as a filesystem, `hf://` paths, volume mounts in Jobs/Spaces), and [Bucket Integrations](./storage-buckets-integrations) for ready-to-use snippets in popular data libraries like pandas, Dask, and Spark.
 
 ## Buckets vs Repositories
 
@@ -298,7 +298,6 @@ api.copy_files(
     "hf://buckets/username/fineweb-data",
 )
 ```
-
 
 You need read access to the source repository or bucket and write access to the destination bucket.
 
